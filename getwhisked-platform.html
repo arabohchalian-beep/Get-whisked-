@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GetWhisked — AI-Powered Bake-for-Good Platform</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600;700&display=swap');
+
+  :root {
+    --pink: #d4856b;
+    --pink-light: #f0b8a0;
+    --pink-pale: #fdf3ee;
+    --blue-dark: #2d2d3a;
+    --blue-muted: #5c5c6e;
+    --teal: #7eb8a2;
+    --teal-light: #b5d9cb;
+    --cream: #faf7f4;
+    --white: #ffffff;
+    --gold: #d4a24e;
+    --steel: #3d4a5c;
+    --coral: #c4694a;
+    --peach: #f5c6a8;
+    --rose: #c97b7b;
+    --shadow: 0 4px 20px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--blue-dark);
+    background: var(--cream);
+    overflow-x: hidden;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    padding: 0.8rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 0.6rem;
+    text-decoration: none; color: var(--blue-dark);
+  }
+  .nav-logo svg { width: 38px; height: 38px; }
+  .nav-logo span {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5rem; font-weight: 700;
+  }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a {
+    text-decoration: none; color: var(--blue-muted);
+    font-size: 0.9rem; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--coral); }
+  .nav-cta {
+    background: linear-gradient(135deg, var(--coral) 0%, var(--rose) 100%) !important; color: white !important;
+    padding: 0.6rem 1.4rem; border-radius: 50px;
+    font-weight: 600 !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+  }
+  .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(196,105,74,0.35); }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    background: linear-gradient(150deg, #fef8f4 0%, #fdf3ec 35%, #faf5f0 70%, #f7f3ee 100%);
+    position: relative; overflow: hidden;
+  }
+  .hero-blob-1 {
+    position: absolute; width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,198,168,0.3) 0%, transparent 60%);
+    top: -150px; right: -100px;
+    animation: floatBlob 12s ease-in-out infinite;
+  }
+  .hero-blob-2 {
+    position: absolute; width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(126,184,162,0.18) 0%, transparent 60%);
+    bottom: -120px; left: -80px;
+    animation: floatBlob 14s ease-in-out infinite reverse;
+  }
+  .hero-blob-3 {
+    position: absolute; width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,123,123,0.15) 0%, transparent 60%);
+    top: 35%; left: 20%;
+    animation: floatBlob 10s ease-in-out infinite;
+  }
+  .hero-blob-4 {
+    position: absolute; width: 350px; height: 350px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,162,78,0.12) 0%, transparent 60%);
+    top: 10%; left: 5%;
+    animation: floatBlob 16s ease-in-out infinite;
+  }
+  .hero-silhouettes {
+    position: absolute; inset: 0; overflow: hidden; z-index: 0;
+  }
+  .hero-silhouettes svg {
+    position: absolute;
+    fill: none; stroke-width: 1.5;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+  .hero-silhouettes .sil-1 { top: 5%; left: 3%; width: 180px; stroke: var(--coral); transform: rotate(-12deg); animation: floatBlob 14s ease-in-out infinite; }
+  .hero-silhouettes .sil-2 { top: 8%; right: 4%; width: 160px; stroke: var(--teal); transform: rotate(8deg); animation: floatBlob 11s ease-in-out infinite reverse; }
+  .hero-silhouettes .sil-3 { bottom: 5%; left: 5%; width: 170px; stroke: var(--pink); transform: rotate(5deg); animation: floatBlob 13s ease-in-out infinite; }
+  .hero-silhouettes .sil-4 { bottom: 10%; right: 4%; width: 180px; stroke: var(--gold); transform: rotate(-6deg); animation: floatBlob 12s ease-in-out infinite reverse; }
+  .hero-silhouettes .sil-5 { top: 45%; left: 1%; width: 140px; stroke: var(--teal); transform: rotate(15deg); animation: floatBlob 15s ease-in-out infinite; }
+  .hero-silhouettes .sil-6 { top: 35%; right: 1%; width: 150px; stroke: var(--coral); transform: rotate(-10deg); animation: floatBlob 10s ease-in-out infinite reverse; }
+  .hero::before {
+    content: ''; position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(232,117,138,0.06) 0%, transparent 70%);
+    top: -100px; right: -100px; border-radius: 50%;
+  }
+  .hero::after {
+    content: ''; position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(129,212,194,0.06) 0%, transparent 70%);
+    bottom: -50px; left: -50px; border-radius: 50%;
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 800px; }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.8rem; line-height: 1.15; font-weight: 700;
+    margin-bottom: 1.2rem; color: var(--blue-dark);
+    animation: fadeInUp 0.8s ease 0.2s both;
+  }
+  .hero h1 .accent { color: var(--pink); }
+  .hero h1 .accent-teal { color: var(--steel); }
+  .hero p {
+    font-size: 1.15rem; color: var(--blue-muted);
+    line-height: 1.7; max-width: 600px; margin: 0 auto 2.5rem;
+    animation: fadeInUp 0.8s ease 0.4s both;
+  }
+  .hero-buttons {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    animation: fadeInUp 0.8s ease 0.6s both;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--coral) 0%, var(--rose) 100%); color: white; border: none;
+    padding: 0.9rem 2rem; border-radius: 50px; font-size: 1rem;
+    font-weight: 600; cursor: pointer;
+    transition: all 0.3s; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(196,105,74,0.35); }
+  .btn-secondary {
+    background: white; color: var(--blue-dark); border: 2px solid #e2e8f0;
+    padding: 0.9rem 2rem; border-radius: 50px; font-size: 1rem;
+    font-weight: 600; cursor: pointer;
+    transition: all 0.3s; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-secondary:hover { border-color: var(--pink); color: var(--pink); transform: translateY(-2px); }
+
+  /* ===== IMPACT BANNER ===== */
+  .impact-banner {
+    background: linear-gradient(135deg, #2d2d3a 0%, #3d4a5c 100%);
+    padding: 3rem 2rem;
+    display: flex; justify-content: center; gap: 4rem; flex-wrap: wrap;
+  }
+  .impact-stat { text-align: center; }
+  .impact-stat .number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; font-weight: 700; color: var(--pink-light);
+  }
+  .impact-stat .label { color: rgba(255,255,255,0.7); font-size: 0.85rem; margin-top: 0.3rem; font-weight: 500; }
+
+  /* ===== SECTIONS ===== */
+  section { padding: 5rem 2rem; }
+  .section-header { text-align: center; max-width: 600px; margin: 0 auto 3.5rem; }
+  .section-header .tag {
+    display: inline-block; background: var(--pink-pale); color: var(--pink);
+    padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.8rem;
+    font-weight: 600; margin-bottom: 1rem; letter-spacing: 0.5px;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem; font-weight: 700; margin-bottom: 0.8rem;
+  }
+  .section-header p { color: var(--blue-muted); font-size: 1.05rem; line-height: 1.6; }
+
+  /* ===== HOW IT WORKS ===== */
+  .how-it-works { background: white; }
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem; max-width: 1100px; margin: 0 auto;
+  }
+  .step-card {
+    background: var(--cream); border-radius: 20px; padding: 2rem;
+    text-align: center; position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .step-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+  .step-number {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--coral), var(--rose)); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1.2rem;
+    margin: 0 auto 1.2rem;
+  }
+  .step-card h3 { font-size: 1.1rem; margin-bottom: 0.6rem; font-weight: 700; }
+  .step-card p { color: var(--blue-muted); font-size: 0.9rem; line-height: 1.6; }
+  .step-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+
+  /* ===== AI FEATURES ===== */
+  .ai-features { background: var(--cream); }
+  .features-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem; max-width: 1100px; margin: 0 auto;
+  }
+  .feature-card {
+    background: white; border-radius: 20px; padding: 2.5rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .feature-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+  .feature-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+  .feature-card:nth-child(1)::before { background: var(--coral); }
+  .feature-card:nth-child(2)::before { background: var(--teal); }
+  .feature-card:nth-child(3)::before { background: var(--gold); }
+  .feature-icon {
+    width: 56px; height: 56px; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; margin-bottom: 1.2rem;
+  }
+  .feature-card:nth-child(1) .feature-icon { background: var(--pink-pale); }
+  .feature-card:nth-child(2) .feature-icon { background: #ecf5f0; }
+  .feature-card:nth-child(3) .feature-icon { background: #fdf5e8; }
+  .feature-card h3 { font-size: 1.15rem; margin-bottom: 0.6rem; font-weight: 700; }
+  .feature-card p { color: var(--blue-muted); font-size: 0.9rem; line-height: 1.7; }
+
+  /* ===== AI DEMO ===== */
+  .ai-demo { background: white; }
+  .demo-container {
+    max-width: 800px; margin: 0 auto;
+    background: var(--cream); border-radius: 24px;
+    box-shadow: var(--shadow-lg); overflow: hidden;
+  }
+  .demo-tabs {
+    display: flex; background: white; border-bottom: 1px solid #eee;
+  }
+  .demo-tab {
+    flex: 1; padding: 1rem; text-align: center;
+    cursor: pointer; font-size: 0.9rem; font-weight: 600;
+    color: var(--blue-muted); border: none; background: none;
+    transition: all 0.3s; border-bottom: 3px solid transparent;
+  }
+  .demo-tab.active { color: var(--pink); border-bottom-color: var(--pink); background: var(--pink-pale); }
+  .demo-tab:hover { color: var(--pink); }
+  .demo-content { padding: 2rem; min-height: 400px; }
+  .chat-area {
+    display: flex; flex-direction: column; gap: 1rem;
+    max-height: 300px; overflow-y: auto; margin-bottom: 1.5rem;
+    padding-right: 0.5rem;
+  }
+  .chat-msg {
+    max-width: 80%; padding: 1rem 1.2rem; border-radius: 18px;
+    font-size: 0.9rem; line-height: 1.6;
+    animation: fadeInUp 0.4s ease;
+  }
+  .chat-msg.bot {
+    background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    align-self: flex-start; border-bottom-left-radius: 4px;
+  }
+  .recipe-img {
+    width: 100%; max-width: 360px; height: 220px; object-fit: cover;
+    border-radius: 12px; margin-bottom: 0.8rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  .chat-msg.user {
+    background: var(--pink); color: white;
+    align-self: flex-end; border-bottom-right-radius: 4px;
+  }
+  .chat-input-row {
+    display: flex; gap: 0.8rem;
+  }
+  .chat-input {
+    flex: 1; padding: 0.9rem 1.2rem; border: 2px solid #e2e8f0;
+    border-radius: 50px; font-size: 0.9rem; outline: none;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.3s;
+  }
+  .chat-input:focus { border-color: var(--pink); }
+  .chat-send {
+    background: var(--pink); color: white; border: none;
+    width: 44px; height: 44px; border-radius: 50%;
+    cursor: pointer; font-size: 1.1rem;
+    transition: transform 0.2s, background 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .chat-send:hover { transform: scale(1.05); background: #d4627a; }
+
+  /* Cause Matcher */
+  .cause-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .cause-card {
+    background: white; border-radius: 16px; padding: 1.2rem;
+    cursor: pointer; transition: all 0.3s;
+    border: 2px solid transparent; text-align: center;
+  }
+  .cause-card:hover { border-color: var(--teal); transform: translateY(-2px); box-shadow: var(--shadow); }
+  .cause-card.selected { border-color: var(--teal); background: #ecf5f0; }
+  .cause-card .cause-emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+  .cause-card h4 { font-size: 0.9rem; margin-bottom: 0.3rem; }
+  .cause-card p { font-size: 0.75rem; color: var(--blue-muted); }
+  .cause-result {
+    margin-top: 1.5rem; padding: 1.2rem; background: white;
+    border-radius: 16px; border-left: 4px solid var(--teal);
+    display: none; animation: fadeInUp 0.5s ease;
+  }
+  .cause-result.show { display: block; }
+  .cause-result h4 { color: var(--teal); margin-bottom: 0.4rem; }
+  .cause-result p { font-size: 0.85rem; color: var(--blue-muted); line-height: 1.6; }
+
+  /* Marketing Helper */
+  .marketing-gen {
+    text-align: center;
+  }
+  .marketing-gen select {
+    padding: 0.8rem 1.2rem; border: 2px solid #e2e8f0;
+    border-radius: 12px; font-size: 0.9rem; margin-bottom: 1rem;
+    width: 100%; max-width: 300px; font-family: 'Inter', sans-serif;
+    outline: none; cursor: pointer;
+  }
+  .marketing-gen select:focus { border-color: var(--pink); }
+  .gen-btn {
+    background: var(--gold); color: white; border: none;
+    padding: 0.8rem 2rem; border-radius: 50px; font-size: 0.9rem;
+    font-weight: 600; cursor: pointer; transition: all 0.3s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .gen-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(212,168,83,0.4); }
+  .gen-output {
+    margin-top: 1.5rem; padding: 1.5rem; background: white;
+    border-radius: 16px; text-align: left; font-size: 0.9rem;
+    line-height: 1.7; box-shadow: var(--shadow);
+    display: none; animation: fadeInUp 0.5s ease;
+  }
+  .gen-output.show { display: block; }
+  .gen-output .post-label {
+    font-weight: 700; color: var(--gold); font-size: 0.75rem;
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;
+  }
+
+  /* ===== FEATURED BAKERS ===== */
+  .featured-bakers { background: var(--cream); }
+  .bakers-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem; max-width: 1100px; margin: 0 auto;
+  }
+  .baker-card {
+    background: white; border-radius: 20px; overflow: hidden;
+    box-shadow: var(--shadow); transition: transform 0.3s;
+  }
+  .baker-card:hover { transform: translateY(-5px); }
+  .baker-img {
+    height: 180px; position: relative; overflow: hidden;
+  }
+  .baker-img img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .baker-img-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem;
+  }
+  .baker-img-placeholder:nth-child(1) { background: linear-gradient(135deg, #fce4ec, #f8bbd0); }
+  .baker-cause {
+    position: absolute; bottom: 0.8rem; left: 0.8rem;
+    background: rgba(255,255,255,0.95); padding: 0.3rem 0.8rem;
+    border-radius: 50px; font-size: 0.7rem; font-weight: 600;
+    color: var(--teal);
+  }
+  .baker-info { padding: 1.5rem; }
+  .baker-info h3 { font-size: 1.05rem; margin-bottom: 0.3rem; }
+  .baker-info .baker-desc { color: var(--blue-muted); font-size: 0.8rem; margin-bottom: 1rem; }
+  .baker-progress { margin-bottom: 0.8rem; }
+  .baker-progress-bar {
+    height: 8px; background: #eee; border-radius: 50px; overflow: hidden;
+  }
+  .baker-progress-fill {
+    height: 100%; border-radius: 50px;
+    transition: width 1.5s ease;
+  }
+  .baker-progress-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.75rem; color: var(--blue-muted); margin-top: 0.4rem;
+  }
+
+  /* ===== ORIGIN STORY ===== */
+  .origin { background: white; }
+  .origin-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    max-width: 1000px; margin: 0 auto; align-items: center;
+  }
+  .origin-visual {
+    position: relative;
+  }
+  .origin-visual .timeline {
+    position: relative; padding-left: 2rem;
+  }
+  .timeline::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: linear-gradient(to bottom, var(--pink), var(--teal));
+    border-radius: 3px;
+  }
+  .timeline-item {
+    position: relative; padding-bottom: 2rem;
+  }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -2rem;
+    top: 0.3rem; width: 12px; height: 12px;
+    background: white; border: 3px solid var(--pink);
+    border-radius: 50%;
+  }
+  .timeline-item:nth-child(2)::before { border-color: var(--teal); }
+  .timeline-item:nth-child(3)::before { border-color: var(--teal); }
+  .timeline-item .year {
+    font-weight: 700; color: var(--pink); font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+  }
+  .timeline-item:nth-child(2) .year { color: var(--teal); }
+  .timeline-item:nth-child(3) .year { color: var(--teal); }
+  .timeline-item h4 { font-size: 1rem; margin-bottom: 0.3rem; }
+  .timeline-item p { font-size: 0.85rem; color: var(--blue-muted); line-height: 1.6; }
+  .origin-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; margin-bottom: 1rem;
+  }
+  .origin-text p {
+    color: var(--blue-muted); font-size: 0.95rem; line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+  .origin-text .highlight-box {
+    background: var(--pink-pale); border-radius: 16px; padding: 1.2rem;
+    border-left: 4px solid var(--pink); margin-top: 1.5rem;
+  }
+  .origin-text .highlight-box p { font-weight: 600; color: var(--pink); margin: 0; font-size: 0.95rem; }
+
+  /* ===== WHY GETWHISKED ===== */
+  .why-section { background: linear-gradient(135deg, #fdf3ee 0%, #faf0e8 50%, #f5ebe3 100%); color: var(--blue-dark); }
+  .why-section .section-header h2 { color: var(--coral); }
+  .why-section .section-header p { color: var(--blue-muted); }
+  .why-section .section-header .tag { background: rgba(196,105,74,0.12); color: var(--coral); }
+  .why-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+    max-width: 900px; margin: 0 auto;
+  }
+  .why-card {
+    background: white; border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 16px; padding: 1.8rem; transition: all 0.3s;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .why-card:hover { background: white; transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+  .why-card .why-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+  .why-card h3 { font-size: 1rem; margin-bottom: 0.5rem; color: var(--blue-dark); }
+  .why-card p { font-size: 0.85rem; color: var(--blue-muted); line-height: 1.6; }
+  .why-vs {
+    max-width: 900px; margin: 2.5rem auto 0; display: grid;
+    grid-template-columns: 1fr auto 1fr; gap: 1.5rem; align-items: center;
+  }
+  .vs-col { background: white; border-radius: 16px; padding: 1.5rem; border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+  .vs-col h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
+  .vs-col.without h4 { color: var(--blue-muted); }
+  .vs-col.with h4 { color: var(--teal); }
+  .vs-col ul { list-style: none; }
+  .vs-col li { font-size: 0.82rem; color: var(--blue-muted); padding: 0.4rem 0; display: flex; align-items: flex-start; gap: 0.5rem; }
+  .vs-col.with li { color: var(--blue-dark); }
+  .vs-divider { font-size: 1.2rem; font-weight: 700; color: rgba(0,0,0,0.15); text-align: center; }
+
+  /* ===== PRICING ===== */
+  .pricing-section { background: var(--cream); }
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem; max-width: 900px; margin: 0 auto;
+  }
+  .pricing-card {
+    background: white; border-radius: 20px; padding: 2.5rem 2rem;
+    text-align: center; box-shadow: var(--shadow);
+    transition: transform 0.3s; position: relative; border: 2px solid transparent;
+  }
+  .pricing-card:hover { transform: translateY(-5px); }
+  .pricing-card.popular { border-color: var(--pink); }
+  .pricing-card.popular::before {
+    content: 'MOST POPULAR'; position: absolute; top: -12px; left: 50%;
+    transform: translateX(-50%); background: var(--pink); color: white;
+    padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.7rem;
+    font-weight: 700; letter-spacing: 0.5px;
+  }
+  .pricing-card .plan-name { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue-muted); margin-bottom: 0.5rem; }
+  .pricing-card .plan-price { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .pricing-card .plan-period { font-size: 0.8rem; color: var(--blue-muted); margin-bottom: 1.5rem; }
+  .pricing-card ul { list-style: none; text-align: left; margin-bottom: 1.5rem; }
+  .pricing-card li { font-size: 0.85rem; padding: 0.45rem 0; color: var(--blue-muted); display: flex; align-items: flex-start; gap: 0.5rem; }
+  .pricing-card .check { color: var(--teal); font-weight: 700; }
+  .pricing-btn {
+    width: 100%; padding: 0.8rem; border-radius: 50px; font-size: 0.9rem;
+    font-weight: 600; cursor: pointer; transition: all 0.3s; border: none;
+  }
+  .pricing-btn.primary { background: linear-gradient(135deg, var(--coral), var(--rose)); color: white; }
+  .pricing-btn.primary:hover { box-shadow: 0 4px 15px rgba(196,105,74,0.35); }
+  .pricing-btn.secondary { background: var(--cream); color: var(--blue-dark); border: 2px solid #e2e8f0; }
+  .pricing-btn.secondary:hover { border-color: var(--pink); }
+  .pricing-note { text-align: center; max-width: 600px; margin: 2rem auto 0; font-size: 0.8rem; color: var(--blue-muted); line-height: 1.6; }
+
+  /* ===== FLOW PROGRESS ===== */
+  .flow-progress {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0; max-width: 600px; margin: 0 auto 2rem; padding: 0 1rem;
+  }
+  .flow-step {
+    display: flex; align-items: center; gap: 0.5rem; cursor: pointer;
+    opacity: 0.4; transition: opacity 0.3s;
+  }
+  .flow-step.active { opacity: 1; }
+  .flow-step.done { opacity: 0.7; }
+  .flow-step-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--cream); border: 2px solid var(--blue-muted);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.85rem; color: var(--blue-muted);
+    transition: all 0.3s;
+  }
+  .flow-step.active .flow-step-num {
+    background: linear-gradient(135deg, var(--coral), var(--rose));
+    border-color: var(--coral); color: white;
+  }
+  .flow-step.done .flow-step-num {
+    background: var(--teal); border-color: var(--teal); color: white;
+  }
+  .flow-step span { font-size: 0.82rem; font-weight: 600; color: var(--blue-dark); }
+  .flow-line {
+    flex: 1; height: 2px; background: #e2e8f0; margin: 0 0.8rem;
+    min-width: 30px;
+  }
+  .flow-step-header { margin-bottom: 1.5rem; }
+  .flow-badge {
+    display: inline-block; background: rgba(196,105,74,0.1); color: var(--coral);
+    padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.75rem;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+  }
+  .flow-step-header h3 {
+    font-family: 'Playfair Display', serif; font-size: 1.4rem;
+    margin-bottom: 0.3rem;
+  }
+  .flow-step-header p { color: var(--blue-muted); font-size: 0.9rem; }
+  .flow-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #f0ebe6;
+  }
+  .flow-next-btn {
+    background: linear-gradient(135deg, var(--coral), var(--rose)); color: white;
+    border: none; padding: 0.7rem 1.5rem; border-radius: 50px;
+    font-weight: 600; font-size: 0.9rem; cursor: pointer;
+    transition: all 0.3s;
+  }
+  .flow-next-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(196,105,74,0.35); }
+  .flow-back-btn {
+    background: none; border: 2px solid #e2e8f0; color: var(--blue-muted);
+    padding: 0.6rem 1.2rem; border-radius: 50px; font-weight: 600;
+    font-size: 0.85rem; cursor: pointer; transition: all 0.3s;
+  }
+  .flow-back-btn:hover { border-color: var(--blue-muted); }
+
+  /* ===== CHARITY FINDER ===== */
+  .charity-finder { padding: 0.5rem 0; }
+  .charity-input-row { margin-bottom: 1rem; }
+  .charity-zip {
+    width: 140px; padding: 0.75rem 1rem; border: 2px solid #e2e8f0;
+    border-radius: 12px; font-size: 1rem; font-family: 'Inter', sans-serif;
+    text-align: center; letter-spacing: 2px; outline: none;
+    margin-bottom: 1rem; transition: border-color 0.3s;
+  }
+  .charity-zip:focus { border-color: var(--coral); }
+  .cause-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .cause-pill {
+    padding: 0.5rem 1rem; border: 2px solid #e2e8f0; border-radius: 50px;
+    background: white; font-size: 0.82rem; font-weight: 500; cursor: pointer;
+    transition: all 0.2s; color: var(--blue-muted);
+  }
+  .cause-pill:hover { border-color: var(--coral); color: var(--coral); }
+  .cause-pill.selected { border-color: var(--coral); background: rgba(196,105,74,0.08); color: var(--coral); font-weight: 600; }
+  .charity-results { margin-top: 1.2rem; }
+  .charity-result-card {
+    background: var(--pink-pale); border-radius: 16px; padding: 1.2rem 1.5rem;
+    margin-bottom: 0.8rem; border-left: 4px solid var(--teal);
+    animation: fadeInUp 0.4s ease;
+  }
+  .charity-result-card h4 { font-size: 0.95rem; margin-bottom: 0.3rem; color: var(--blue-dark); }
+  .charity-result-card .charity-type { font-size: 0.75rem; color: var(--teal); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.4rem; }
+  .charity-result-card p { font-size: 0.85rem; color: var(--blue-muted); line-height: 1.5; }
+  .charity-result-card .charity-distance { font-size: 0.78rem; color: var(--coral); font-weight: 600; margin-top: 0.4rem; }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: white; border-radius: 24px; padding: 2.5rem;
+    max-width: 440px; width: 90%; position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    animation: fadeInUp 0.3s ease;
+  }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: none; border: none; font-size: 1.5rem;
+    cursor: pointer; color: var(--blue-muted); line-height: 1;
+  }
+  .modal-close:hover { color: var(--blue-dark); }
+  .modal h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; margin-bottom: 0.5rem;
+  }
+  .modal p { color: var(--blue-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5; }
+  .modal input[type="text"], .modal input[type="email"] {
+    width: 100%; padding: 0.85rem 1rem; border: 2px solid #e2e8f0;
+    border-radius: 12px; font-size: 0.9rem; font-family: 'Inter', sans-serif;
+    outline: none; margin-bottom: 0.8rem; transition: border-color 0.3s;
+  }
+  .modal input:focus { border-color: var(--pink); }
+  .modal .modal-btn {
+    width: 100%; padding: 0.9rem; background: linear-gradient(135deg, var(--coral), var(--pink)); color: white;
+    border: none; border-radius: 50px; font-size: 1rem; font-weight: 600;
+    cursor: pointer; transition: all 0.3s; margin-top: 0.5rem;
+  }
+  .modal .modal-btn:hover { box-shadow: 0 4px 15px rgba(201,162,189,0.5); }
+  .modal .modal-success {
+    display: none; text-align: center; padding: 1rem 0;
+  }
+  .modal .modal-success.show { display: block; }
+  .modal .modal-success .check-circle {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--teal); color: white; font-size: 1.8rem;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+  }
+  .modal .modal-form.hide { display: none; }
+
+  @media (max-width: 768px) {
+    .why-grid { grid-template-columns: 1fr; }
+    .why-vs { grid-template-columns: 1fr; }
+    .vs-divider { padding: 0.5rem; }
+  }
+
+  /* ===== CTA ===== */
+  .cta-section {
+    background: linear-gradient(135deg, #1e1e2a 0%, #3d4a5c 100%);
+    text-align: center; padding: 5rem 2rem;
+  }
+  .cta-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem; color: white; margin-bottom: 0.8rem;
+  }
+  .cta-section p {
+    color: rgba(255,255,255,0.7); font-size: 1.05rem;
+    max-width: 500px; margin: 0 auto 2rem; line-height: 1.6;
+  }
+  .cta-section .btn-primary { font-size: 1.1rem; padding: 1rem 2.5rem; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: #1e1e2a; padding: 3rem 2rem 1.5rem;
+    color: rgba(255,255,255,0.6);
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem; max-width: 1000px; margin: 0 auto 2rem;
+  }
+  .footer-brand .brand-name {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.6rem; color: white; margin-bottom: 0.5rem;
+  }
+  .footer-brand p { font-size: 0.85rem; line-height: 1.6; }
+  .footer-col h4 { color: white; font-size: 0.85rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+  .footer-col a { display: block; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem; margin-bottom: 0.5rem; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--pink-light); }
+  .footer-bottom {
+    text-align: center; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.8rem; max-width: 1000px; margin: 0 auto;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  @keyframes floatBlob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -20px) scale(1.05); }
+  }
+  @keyframes countUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+  .fade-in {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 2.2rem; }
+    .impact-banner { gap: 2rem; padding: 2rem 1rem; }
+    .impact-stat .number { font-size: 1.8rem; }
+    .origin-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .cause-grid { grid-template-columns: 1fr; }
+    .nav-links { gap: 1rem; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .demo-tab { font-size: 0.75rem; padding: 0.8rem 0.5rem; }
+    .section-header h2 { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 60 60" fill="none">
+      <path d="M20 55 C20 55 10 50 10 38 L10 30 C10 30 15 28 20 30 L20 55Z" fill="#e8758a" opacity="0.3"/>
+      <path d="M40 55 C40 55 50 50 50 38 L50 30 C50 30 45 28 40 30 L40 55Z" fill="#e8758a" opacity="0.3"/>
+      <ellipse cx="30" cy="38" rx="18" ry="16" fill="#e8758a"/>
+      <ellipse cx="30" cy="28" rx="16" ry="14" fill="#fff5f7"/>
+      <ellipse cx="30" cy="26" rx="14" ry="10" fill="white"/>
+      <path d="M22 28 Q26 18 30 22 Q34 18 38 28" fill="#e8758a" opacity="0.15"/>
+      <circle cx="30" cy="16" r="7" fill="#ff6b7a"/>
+      <path d="M30 9 L30 12" stroke="#4caf50" stroke-width="2" stroke-linecap="round"/>
+      <path d="M28 11 Q30 8 32 11" stroke="#4caf50" stroke-width="1.5" fill="none"/>
+      <circle cx="28" cy="17" r="1" fill="white" opacity="0.6"/>
+      <circle cx="32" cy="15" r="0.8" fill="white" opacity="0.6"/>
+      <circle cx="30" cy="19" r="0.7" fill="white" opacity="0.6"/>
+    </svg>
+    <span>GetWhisked</span>
+  </a>
+  <div class="nav-links">
+    <a href="#how-it-works">How It Works</a>
+    <a href="#why">Why GetWhisked</a>
+    <a href="#bakers">Fundraisers</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#story">Our Story</a>
+    <a href="#" class="nav-cta" onclick="openModal(); return false;">Start a Bake Sale</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-blob-1"></div>
+  <div class="hero-blob-2"></div>
+  <div class="hero-blob-3"></div>
+  <div class="hero-blob-4"></div>
+  <div class="hero-silhouettes">
+    <!-- Cupcake -->
+    <svg class="sil-1" viewBox="0 0 80 80"><path d="M25 42 C25 42 18 38 18 30 C18 24 23 22 27 25 L27 42"/><path d="M55 42 C55 42 62 38 62 30 C62 24 57 22 53 25 L53 42"/><ellipse cx="40" cy="44" rx="22" ry="10"/><path d="M20 44 Q25 72 40 72 Q55 72 60 44"/><path d="M28 38 Q34 28 40 34 Q46 28 52 38"/></svg>
+    <!-- Cookie -->
+    <svg class="sil-2" viewBox="0 0 80 80"><circle cx="40" cy="40" r="30"/><circle cx="30" cy="33" r="4"/><circle cx="48" cy="30" r="3.5"/><circle cx="52" cy="47" r="4"/><circle cx="34" cy="52" r="3.5"/><circle cx="42" cy="42" r="3"/></svg>
+    <!-- Pie -->
+    <svg class="sil-3" viewBox="0 0 80 80"><ellipse cx="40" cy="35" rx="34" ry="10"/><path d="M6 35 Q6 60 40 60 Q74 60 74 35"/><path d="M12 35 Q20 28 28 35 Q36 28 44 35 Q52 28 60 35 Q68 28 68 35"/></svg>
+    <!-- Cake -->
+    <svg class="sil-4" viewBox="0 0 80 80"><rect x="12" y="35" width="56" height="25" rx="3"/><rect x="18" y="22" width="44" height="15" rx="3"/><path d="M30 22 L30 16 M40 22 L40 14 M50 22 L50 16"/><ellipse cx="30" cy="14" rx="3" ry="4"/><ellipse cx="40" cy="12" rx="3" ry="4"/><ellipse cx="50" cy="14" rx="3" ry="4"/><path d="M12 47 Q26 43 40 47 Q54 43 68 47"/></svg>
+    <!-- Whisk -->
+    <svg class="sil-5" viewBox="0 0 80 80"><line x1="40" y1="8" x2="40" y2="38" stroke-width="2.5" stroke-linecap="round"/><path d="M30 38 Q30 65 40 70 Q50 65 50 38"/><path d="M34 38 Q35 60 40 64 Q45 60 46 38"/><path d="M38 38 Q39 55 40 58 Q41 55 42 38"/></svg>
+    <!-- Croissant -->
+    <svg class="sil-6" viewBox="0 0 80 80"><path d="M15 50 Q10 35 25 28 Q35 24 40 30 Q45 24 55 28 Q70 35 65 50 Q58 58 40 55 Q22 58 15 50Z"/><path d="M30 35 Q35 42 40 38 Q45 42 50 35"/><path d="M25 42 Q32 48 40 45 Q48 48 55 42"/></svg>
+  </div>
+  <div class="hero-content">
+    <h1>Organize a <span class="accent">Bake Sale</span>,<br>Change the <span class="accent-teal">World</span></h1>
+    <p>Bake it. Sell it. Donate it. Everything a young baker needs to run a bake sale and give back to a local charity.</p>
+    <div class="hero-buttons">
+      <a href="#" class="btn-primary" onclick="openModal(); return false;">Start Your Bake Sale &rarr;</a>
+      <a href="#how-it-works" class="btn-secondary">See How It Works</a>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT BANNER -->
+<div class="impact-banner">
+  <div class="impact-stat">
+    <div class="number" data-target="127">0</div>
+    <div class="label">Bake Sales Organized</div>
+  </div>
+  <div class="impact-stat">
+    <div class="number" data-target="12350" data-prefix="$">$0</div>
+    <div class="label">Donated to Charities</div>
+  </div>
+  <div class="impact-stat">
+    <div class="number" data-target="48">0</div>
+    <div class="label">Young Bakers on Platform</div>
+  </div>
+  <div class="impact-stat">
+    <div class="number" data-target="15">0</div>
+    <div class="label">Verified Nonprofits</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how-it-works" id="how-it-works">
+  <div class="section-header fade-in">
+    <span class="tag">HOW IT WORKS</span>
+    <h2>From Oven to Impact in 4 Steps</h2>
+    <p>Whether you're a first-time baker or a seasoned pro, our AI guides you through every step of launching a bake-for-good fundraiser.</p>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card fade-in">
+      <div class="step-icon">&#127856;</div>
+      <div class="step-number">1</div>
+      <h3>Create Your Fundraiser</h3>
+      <p>Sign up, set up your baker profile, and create a fundraiser page. Tell the world what you love to bake and the cause you're raising money for.</p>
+    </div>
+    <div class="step-card fade-in">
+      <div class="step-icon">&#129302;</div>
+      <div class="step-number">2</div>
+      <h3>AI Plans Your Bake Sale</h3>
+      <p>Our AI helps you pick recipes for your skill level, plan quantities, create marketing materials, and figure out pricing — everything you need to run a successful event.</p>
+    </div>
+    <div class="step-card fade-in">
+      <div class="step-icon">&#128154;</div>
+      <div class="step-number">3</div>
+      <h3>Host Your Local Bake Sale</h3>
+      <p>Sell your treats in person at school, church, a farmers market, or community event. Supporters can also donate directly online through your fundraiser page.</p>
+    </div>
+    <div class="step-card fade-in">
+      <div class="step-icon">&#127881;</div>
+      <div class="step-number">4</div>
+      <h3>Donate & Track Impact</h3>
+      <p>100% of net proceeds go to your chosen verified nonprofit. Your live dashboard tracks every dollar raised, every bake sale held, and every life touched.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY GETWHISKED -->
+<section class="why-section" id="why">
+  <div class="section-header fade-in">
+    <span class="tag">WHY GETWHISKED</span>
+    <h2>More Than Just a Bake Sale</h2>
+    <p>You could run a bake sale on your own. But GetWhisked turns it into something bigger.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-card fade-in">
+      <div class="why-icon">&#128196;</div>
+      <h3>Your Own Fundraiser Page — In Minutes</h3>
+      <p>No coding. No Wix. No design skills. You answer a few questions and GetWhisked builds a professional fundraiser page with your story, your photos, your cause, and a live donation tracker — ready to share on Instagram, text to family, or link on your college application.</p>
+    </div>
+    <div class="why-card fade-in">
+      <div class="why-icon">&#128177;</div>
+      <h3>Online Donations = 3x More Raised</h3>
+      <p>A bake sale table reaches 50 people. Your donation page reaches everyone. Grandma in another state, your parent's coworkers, your friend's followers — they can all donate $5, $20, $100 without being there. Most GetWhisked fundraisers raise more online than in person.</p>
+    </div>
+    <div class="why-card fade-in">
+      <div class="why-icon">&#129302;</div>
+      <h3>AI Handles the Stuff You'd Google</h3>
+      <p>"How many cupcakes for 100 people?" "How do I price to cover costs?" "What should my Instagram caption say?" "What's a good allergen label?" — Stop Googling. Ask the AI and get an instant, personalized answer for YOUR bake sale.</p>
+    </div>
+    <div class="why-card fade-in">
+      <div class="why-icon">&#9989;</div>
+      <h3>Real Charities, Not Random Venmos</h3>
+      <p>When you raise money "for charity" on your own, people wonder: where does it actually go? GetWhisked only works with verified 501(c)(3) nonprofits, so donors trust that every dollar lands where you promised. That credibility matters.</p>
+    </div>
+    <div class="why-card fade-in">
+      <div class="why-icon">&#128200;</div>
+      <h3>A Portfolio That Proves It</h3>
+      <p>College apps ask "tell us about your community involvement." Most students write a paragraph. You'll link to a dashboard showing $2,400 raised across 4 events for 3 charities — with photos, donation receipts, and thank-you letters. That's proof, not a story.</p>
+    </div>
+    <div class="why-card fade-in">
+      <div class="why-icon">&#127758;</div>
+      <h3>You're Not Doing This Alone</h3>
+      <p>See what other teen bakers are raising money for. Get recipe ideas from their events. Message them for tips. GetWhisked is a community of young people who bake with purpose — and being part of it looks incredible on applications too.</p>
+    </div>
+  </div>
+  <div class="why-vs fade-in">
+    <div class="vs-col without">
+      <h4>Doing It Alone</h4>
+      <ul>
+        <li>&#10060; No online donation option</li>
+        <li>&#10060; No idea how to price or plan</li>
+        <li>&#10060; Handmade flyers, no promotion help</li>
+        <li>&#10060; Hard to find verified charities</li>
+        <li>&#10060; No record of your impact</li>
+        <li>&#10060; One-time event, then forgotten</li>
+      </ul>
+    </div>
+    <div class="vs-divider">VS</div>
+    <div class="vs-col with">
+      <h4>With GetWhisked</h4>
+      <ul>
+        <li>&#10004; Professional fundraiser page + online donations</li>
+        <li>&#10004; AI plans recipes, pricing, and quantities</li>
+        <li>&#10004; AI generates social media posts and flyers</li>
+        <li>&#10004; Pre-vetted 501(c)(3) nonprofits</li>
+        <li>&#10004; Live impact dashboard for your portfolio</li>
+        <li>&#10004; Part of a national baker community</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- HOW THE AI HELPS -->
+<section class="ai-features" id="ai-features">
+  <div class="section-header fade-in">
+    <span class="tag">YOUR AI-POWERED JOURNEY</span>
+    <h2>From Idea to Impact in 3 Steps</h2>
+    <p>GetWhisked guides you through the entire process — pick what to bake, promote your sale, and choose where the money goes.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card fade-in">
+      <div class="feature-icon">&#127859;</div>
+      <h3>Step 1: Plan Your Bake Sale</h3>
+      <p>Tell the AI what you want to bake, your skill level, any dietary needs, or how many people you're serving. It gives you a full recipe with pricing, quantities, allergen labels, and a shopping list — so you're prepped and ready for your event.</p>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feature-icon">&#128227;</div>
+      <h3>Step 2: Get the Word Out</h3>
+      <p>The AI writes Instagram posts, TikTok captions, flyers, and emails for you — just pick the platform and tone. Share your fundraiser page with family, friends, and your school. The more people know, the more you raise.</p>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feature-icon">&#128154;</div>
+      <h3>Step 3: Pick Your Charity</h3>
+      <p>Enter your zip code and tell us what cause you care about. GetWhisked matches you with verified 501(c)(3) nonprofits in your area — local food banks, animal shelters, youth programs, and more. Your money stays in your community.</p>
+    </div>
+  </div>
+</section>
+
+<!-- AI DEMO - GUIDED FLOW -->
+<section class="ai-demo" id="try-it">
+  <div class="section-header fade-in">
+    <span class="tag">TRY IT NOW</span>
+    <h2>See How It Works — Live</h2>
+    <p>Walk through the three steps every GetWhisked baker follows. Try each one right here.</p>
+  </div>
+
+  <!-- Step Progress Bar -->
+  <div class="flow-progress fade-in">
+    <div class="flow-step active" data-step="1">
+      <div class="flow-step-num">1</div>
+      <span>Pick Your Recipe</span>
+    </div>
+    <div class="flow-line"></div>
+    <div class="flow-step" data-step="2">
+      <div class="flow-step-num">2</div>
+      <span>Promote Your Sale</span>
+    </div>
+    <div class="flow-line"></div>
+    <div class="flow-step" data-step="3">
+      <div class="flow-step-num">3</div>
+      <span>Find Local Charities</span>
+    </div>
+  </div>
+
+  <!-- Step 1: Recipe -->
+  <div class="demo-container fade-in" id="flow-step-1">
+    <div class="flow-step-header">
+      <span class="flow-badge">Step 1</span>
+      <h3>Tell Us What You Want to Bake</h3>
+      <p>Our AI plans your recipe, pricing, and quantities for your bake sale.</p>
+    </div>
+    <div class="chat-area" id="recipe-chat">
+      <div class="chat-msg bot">Hi! I'm your AI Bake Sale Planner. Tell me what you'd like to bake — any flavor, dietary need, or ingredients you have — and I'll create a custom recipe with pricing and quantity tips. Try: <strong>"chocolate and gluten-free"</strong> or <strong>"easy cookies for 50 people"</strong></div>
+    </div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="recipe-input" placeholder="What do you want to bake?" />
+      <button class="chat-send" onclick="handleRecipeChat()">&#10148;</button>
+    </div>
+    <div class="flow-nav">
+      <div></div>
+      <button class="flow-next-btn" onclick="goToStep(2)">Next: Promote Your Sale &#8594;</button>
+    </div>
+  </div>
+
+  <!-- Step 2: Marketing -->
+  <div class="demo-container fade-in" id="flow-step-2" style="display:none;">
+    <div class="flow-step-header">
+      <span class="flow-badge">Step 2</span>
+      <h3>Spread the Word</h3>
+      <p>AI generates social media posts, flyers, and messages to get people to your bake sale.</p>
+    </div>
+    <div class="marketing-gen">
+      <div style="display:flex; gap:0.8rem; flex-wrap:wrap; margin-bottom:1rem;">
+        <select id="platform-select" style="flex:1; min-width:160px;">
+          <option value="instagram">Instagram Post</option>
+          <option value="twitter">Twitter / X Post</option>
+          <option value="facebook">Facebook Post</option>
+          <option value="tiktok">TikTok Caption</option>
+        </select>
+        <select id="tone-select" style="flex:1; min-width:160px;">
+          <option value="fun">Fun &amp; Playful</option>
+          <option value="heartfelt">Heartfelt &amp; Inspiring</option>
+          <option value="urgent">Urgent Call to Action</option>
+        </select>
+      </div>
+      <button class="gen-btn" onclick="generatePost()">&#9889; Generate Post</button>
+      <div class="gen-output" id="gen-output">
+        <div class="post-label" id="post-label"></div>
+        <p id="post-text"></p>
+      </div>
+    </div>
+    <div class="flow-nav">
+      <button class="flow-back-btn" onclick="goToStep(1)">&#8592; Back</button>
+      <button class="flow-next-btn" onclick="goToStep(3)">Next: Find Charities &#8594;</button>
+    </div>
+  </div>
+
+  <!-- Step 3: Local Charity Finder -->
+  <div class="demo-container fade-in" id="flow-step-3" style="display:none;">
+    <div class="flow-step-header">
+      <span class="flow-badge">Step 3</span>
+      <h3>Find Charities Near You</h3>
+      <p>Enter your zip code and pick a cause — we'll match you with verified local nonprofits.</p>
+    </div>
+    <div class="charity-finder">
+      <div class="charity-input-row">
+        <input type="text" class="charity-zip" id="charity-zip" placeholder="Your zip code" maxlength="5" />
+        <div class="cause-pills">
+          <button class="cause-pill" onclick="selectCause(this, 'animals')">&#128062; Animals</button>
+          <button class="cause-pill" onclick="selectCause(this, 'hunger')">&#127858; Hunger</button>
+          <button class="cause-pill" onclick="selectCause(this, 'education')">&#128218; Education</button>
+          <button class="cause-pill" onclick="selectCause(this, 'environment')">&#127793; Environment</button>
+          <button class="cause-pill" onclick="selectCause(this, 'health')">&#128153; Health</button>
+          <button class="cause-pill" onclick="selectCause(this, 'community')">&#127968; Community</button>
+        </div>
+      </div>
+      <button class="gen-btn" id="find-charities-btn" onclick="findCharities()">&#128269; Find Local Charities</button>
+      <div class="charity-results" id="charity-results"></div>
+    </div>
+    <div class="flow-nav">
+      <button class="flow-back-btn" onclick="goToStep(2)">&#8592; Back</button>
+      <button class="flow-next-btn" onclick="openModal()">I'm Ready — Sign Me Up! &#8594;</button>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED BAKERS -->
+<section class="featured-bakers" id="bakers">
+  <div class="section-header fade-in">
+    <span class="tag">COMMUNITY</span>
+    <h2>Active Fundraisers</h2>
+    <p>Young bakers across the country are organizing local bake sales and raising money for causes they believe in.</p>
+  </div>
+  <div class="bakers-grid">
+    <div class="baker-card fade-in">
+      <div class="baker-img">
+        <div class="baker-img-placeholder" style="background: linear-gradient(135deg, #fce4ec, #f8bbd0);">&#127856;</div>
+        <div class="baker-cause">&#128154; Children's Hospital LA</div>
+      </div>
+      <div class="baker-info">
+        <h3>GetWhisked (Founder)</h3>
+        <div class="baker-desc">Cupcakes, Choreg, pies, and more — baked with love using organic ingredients. All net proceeds donated. Every treat goes beyond dessert.</div>
+        <div class="baker-progress">
+          <div class="baker-progress-bar"><div class="baker-progress-fill" style="width:85%; background: var(--pink);"></div></div>
+          <div class="baker-progress-label"><span>$4,250 raised</span><span>Goal: $5,000</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="baker-card fade-in">
+      <div class="baker-img">
+        <div class="baker-img-placeholder" style="background: linear-gradient(135deg, #e0f5f0, #b8ece2);">&#127846;</div>
+        <div class="baker-cause">&#128062; Local Animal Shelter</div>
+      </div>
+      <div class="baker-info">
+        <h3>Sofia's Sweet Spot</h3>
+        <div class="baker-desc">School bake sale every Friday. Specialty cookies and cake pops — raising money to help rescue animals find forever homes.</div>
+        <div class="baker-progress">
+          <div class="baker-progress-bar"><div class="baker-progress-fill" style="width:62%; background: var(--steel);"></div></div>
+          <div class="baker-progress-label"><span>$1,860 raised</span><span>Goal: $3,000</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="baker-card fade-in">
+      <div class="baker-img">
+        <div class="baker-img-placeholder" style="background: linear-gradient(135deg, #fdf3e0, #f5deb3);">&#127838;</div>
+        <div class="baker-cause">&#128218; Books for Kids</div>
+      </div>
+      <div class="baker-info">
+        <h3>Marcus's Bread Lab</h3>
+        <div class="baker-desc">Monthly farmers market stand. Artisan sourdough and focaccia — every loaf sold helps buy books for underprivileged schools.</div>
+        <div class="baker-progress">
+          <div class="baker-progress-bar"><div class="baker-progress-fill" style="width:41%; background: var(--teal);"></div></div>
+          <div class="baker-progress-label"><span>$820 raised</span><span>Goal: $2,000</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORIGIN STORY -->
+<section class="origin" id="story">
+  <div class="origin-grid">
+    <div class="origin-visual fade-in">
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="year">2020 — Age 11</div>
+          <h4>Natalie's Passion is Born</h4>
+          <p>Natalie Bohchalian started baking during the pandemic and discovered a love for creating sweet treats that bring people joy.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="year">2022 — Growth</div>
+          <h4>Competitions & Skills</h4>
+          <p>Natalie competed in baking competitions, mastered decorating techniques, and learned how a real bakery business operates.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="year">2026 — Platform Launch</div>
+          <h4>Natalie Launches the Platform</h4>
+          <p>Natalie transformed GetWhisked into an AI-powered platform so any young baker can fundraise for causes they care about.</p>
+        </div>
+      </div>
+    </div>
+    <div class="origin-text fade-in">
+      <h2>From Kitchen to <span style="color:var(--pink)">Platform</span></h2>
+      <p>GetWhisked started in Natalie Bohchalian's kitchen — a way to combine her love of baking with giving back. Every cupcake, every loaf of Choreg, every pie was baked with love and donated to support meaningful causes.</p>
+      <p>But Natalie realized one baker can only do so much. The real question became: what if every young person with a passion for baking could do the same thing?</p>
+      <p>That's how Natalie transformed GetWhisked into a platform — powered by AI to lower the barrier for any young baker who wants to turn their kitchen into a force for good.</p>
+      <div class="highlight-box">
+        <p>"100% of net proceeds from every baker on GetWhisked are donated to verified charitable causes."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW DONATIONS WORK -->
+<section class="how-it-works" id="donations">
+  <div class="section-header fade-in">
+    <span class="tag">TRANSPARENCY</span>
+    <h2>How the Money Works</h2>
+    <p>We believe in full transparency. Here's exactly how your bake sale proceeds make it from your kitchen to the causes you care about.</p>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card fade-in">
+      <div class="step-icon">&#127968;</div>
+      <div class="step-number">&#10003;</div>
+      <h3>You Sell Locally</h3>
+      <p>All food is sold in person at local events — school bake sales, farmers markets, community gatherings. No food is shipped or sold online, keeping things simple and compliant with local cottage food rules.</p>
+    </div>
+    <div class="step-card fade-in">
+      <div class="step-icon">&#128177;</div>
+      <div class="step-number">&#10003;</div>
+      <h3>Online Donations Welcome</h3>
+      <p>Your fundraiser page also accepts direct online donations from supporters who want to contribute without buying a treat. No food changes hands — just generosity.</p>
+    </div>
+    <div class="step-card fade-in">
+      <div class="step-icon">&#9989;</div>
+      <div class="step-number">&#10003;</div>
+      <h3>Verified Nonprofits Only</h3>
+      <p>Every charity on GetWhisked is a verified 501(c)(3) nonprofit. We vet every organization so donors and bakers can trust that their money goes where it's supposed to.</p>
+    </div>
+    <div class="step-card fade-in">
+      <div class="step-icon">&#128200;</div>
+      <div class="step-number">&#10003;</div>
+      <h3>100% Net Proceeds Donated</h3>
+      <p>After covering ingredient costs, every penny of profit goes directly to your chosen cause. Your dashboard shows exactly how much was raised, spent, and donated — full transparency.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="section-header fade-in">
+    <span class="tag">SIMPLE PRICING</span>
+    <h2>Pay Per Project, Not Per Month</h2>
+    <p>This is a charity platform — we keep it affordable. No subscriptions. Just a small one-time fee when you launch a fundraiser.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="pricing-card fade-in">
+      <div class="plan-name">First Fundraiser</div>
+      <div class="plan-price">Free</div>
+      <div class="plan-period">your first project is on us</div>
+      <ul>
+        <li><span class="check">&#10004;</span> Personal fundraiser page</li>
+        <li><span class="check">&#10004;</span> Accept online donations</li>
+        <li><span class="check">&#10004;</span> AI recipe &amp; planning tools</li>
+        <li><span class="check">&#10004;</span> Local charity matching</li>
+        <li><span class="check">&#10004;</span> Social media post generator</li>
+        <li><span class="check">&#10004;</span> Impact dashboard</li>
+      </ul>
+      <button class="pricing-btn secondary" onclick="openModal()">Start Free</button>
+    </div>
+    <div class="pricing-card popular fade-in">
+      <div class="plan-name">Per Fundraiser</div>
+      <div class="plan-price">$3</div>
+      <div class="plan-period">one-time per project</div>
+      <ul>
+        <li><span class="check">&#10004;</span> Everything in Free, every time</li>
+        <li><span class="check">&#10004;</span> Unlimited fundraisers</li>
+        <li><span class="check">&#10004;</span> Full AI toolkit (recipes, marketing, matching)</li>
+        <li><span class="check">&#10004;</span> Detailed analytics &amp; donation tracking</li>
+        <li><span class="check">&#10004;</span> Shareable impact portfolio for college apps</li>
+        <li><span class="check">&#10004;</span> Priority charity verification</li>
+      </ul>
+      <button class="pricing-btn primary" onclick="openModal()">Get Started</button>
+    </div>
+    <div class="pricing-card fade-in">
+      <div class="plan-name">School &amp; Club</div>
+      <div class="plan-price">$10</div>
+      <div class="plan-period">one-time per group project</div>
+      <ul>
+        <li><span class="check">&#10004;</span> Everything above</li>
+        <li><span class="check">&#10004;</span> Up to 20 bakers on one project</li>
+        <li><span class="check">&#10004;</span> Team fundraiser page</li>
+        <li><span class="check">&#10004;</span> Group impact dashboard</li>
+        <li><span class="check">&#10004;</span> Perfect for school clubs, teams, and orgs</li>
+      </ul>
+      <button class="pricing-btn secondary" onclick="openModal()">Contact Us</button>
+    </div>
+  </div>
+  <p class="pricing-note">A small 5% platform fee on online donations helps keep GetWhisked running. 100% of in-person bake sale proceeds go to your charity. No subscriptions, no hidden fees — just baking for good.</p>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="start">
+  <h2>Ready to Bake a Difference?</h2>
+  <p>Organize your first bake sale fundraiser with AI-powered tools. No commercial kitchen needed — just a passion for baking and a cause you care about.</p>
+  <a href="#" class="btn-primary" onclick="openModal(); return false;">Start My Bake Sale Fundraiser &rarr;</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="brand-name">GetWhisked</div>
+      <p>The first AI-powered bake-for-good platform built on purpose and heart. Love at First Bite.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#why">Why GetWhisked</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#donations">How Donations Work</a>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <a href="#">Instagram</a>
+      <a href="#">TikTok</a>
+      <a href="#">Contact Us</a>
+      <a href="#story">Our Story</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; 2026 GetWhisked. Built with love, flour, and a little AI.
+  </div>
+</footer>
+
+<!-- SIGNUP MODAL -->
+<div class="modal-overlay" id="signup-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="modal-form" id="modal-form">
+      <h3>Join the Beta</h3>
+      <p>GetWhisked is launching soon. Sign up to be one of the first bakers on the platform and get early access to all AI tools — free.</p>
+      <input type="text" id="signup-name" placeholder="Your name" />
+      <input type="email" id="signup-email" placeholder="Your email" />
+      <select style="width:100%; padding:0.85rem 1rem; border:2px solid #e2e8f0; border-radius:12px; font-size:0.9rem; font-family:'Inter',sans-serif; outline:none; margin-bottom:0.8rem; color:var(--blue-muted);" id="signup-role">
+        <option value="">I am a...</option>
+        <option value="baker">Young baker (under 18)</option>
+        <option value="parent">Parent / guardian</option>
+        <option value="teacher">Teacher / club advisor</option>
+        <option value="org">School or organization</option>
+      </select>
+      <button class="modal-btn" onclick="submitSignup()">Join the Waitlist</button>
+    </div>
+    <div class="modal-success" id="modal-success">
+      <div class="check-circle">&#10003;</div>
+      <h3>You're on the list!</h3>
+      <p>Thanks for signing up. We'll email you when GetWhisked is ready to launch. In the meantime, try out the AI demo tools above!</p>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  // ===== MODAL =====
+  function openModal() {
+    document.getElementById('signup-modal').classList.add('show');
+    document.getElementById('modal-form').classList.remove('hide');
+    document.getElementById('modal-success').classList.remove('show');
+  }
+  function closeModal() {
+    document.getElementById('signup-modal').classList.remove('show');
+  }
+  document.getElementById('signup-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  function submitSignup() {
+    const name = document.getElementById('signup-name').value.trim();
+    const email = document.getElementById('signup-email').value.trim();
+    if (!name || !email) {
+      document.getElementById('signup-name').style.borderColor = name ? '#e2e8f0' : '#e8758a';
+      document.getElementById('signup-email').style.borderColor = email ? '#e2e8f0' : '#e8758a';
+      return;
+    }
+    document.getElementById('modal-form').classList.add('hide');
+    document.getElementById('modal-success').classList.add('show');
+  }
+
+  // ===== STEP FLOW =====
+  let currentStep = 1;
+  function goToStep(step) {
+    // Hide all steps
+    document.getElementById('flow-step-1').style.display = 'none';
+    document.getElementById('flow-step-2').style.display = 'none';
+    document.getElementById('flow-step-3').style.display = 'none';
+    // Show target step
+    document.getElementById('flow-step-' + step).style.display = 'block';
+    // Update progress indicators
+    document.querySelectorAll('.flow-step').forEach(s => {
+      const sNum = parseInt(s.dataset.step);
+      s.classList.remove('active', 'done');
+      if (sNum === step) s.classList.add('active');
+      else if (sNum < step) s.classList.add('done');
+    });
+    currentStep = step;
+    // Scroll to demo section
+    document.getElementById('try-it').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  // Make progress steps clickable
+  document.querySelectorAll('.flow-step').forEach(s => {
+    s.addEventListener('click', () => goToStep(parseInt(s.dataset.step)));
+  });
+
+  // ===== RECIPE CHAT =====
+  const recipeResponses = {
+    chocolate: {
+      name: "Dark Chocolate Lava Brownies",
+      text: `<img class="recipe-img" src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&h=300&fit=crop" alt="Dark Chocolate Lava Brownies"><br><br><strong>Dark Chocolate Lava Brownies</strong> (Makes 12)<br><br><em>Ingredients:</em> 200g dark chocolate, 150g butter, 3 eggs, 200g sugar, 80g flour, pinch of sea salt.<br><br><em>Instructions:</em> Melt chocolate and butter together. Whisk eggs and sugar until fluffy. Fold in chocolate mixture, then flour and salt. Pour into lined pan. Bake at 350\u00b0F for 22 minutes (center should be slightly gooey).<br><br><strong>Suggested price:</strong> $3.50 each | $36/dozen<br><strong>Fundraiser tip:</strong> These are a best-seller at bake sales! The gooey center makes them irresistible.`
+    },
+    "gluten-free": {
+      name: "Flourless Chocolate Torte",
+      text: `<img class="recipe-img" src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop" alt="Flourless Chocolate Torte"><br><br>Great choice for inclusivity! Here's a gluten-free crowd-pleaser:<br><br><strong>Flourless Chocolate Torte</strong> (Serves 10)<br><br><em>Ingredients:</em> 225g dark chocolate, 115g butter, 4 eggs (separated), 150g sugar, 1 tsp vanilla, pinch of salt.<br><br><em>Instructions:</em> Melt chocolate and butter. Beat egg yolks with half the sugar. Beat whites with remaining sugar to stiff peaks. Fold yolk mixture into chocolate, then fold in whites. Pour into springform pan. Bake at 325\u00b0F for 25 minutes.<br><br><strong>Allergen note:</strong> Naturally gluten-free! Contains eggs and dairy.<br><strong>Suggested price:</strong> $5 per slice<br><strong>Pro tip:</strong> Dust with cocoa powder and add berries for a premium look!`
+    },
+    vegan: {
+      name: "Vegan Banana Bread",
+      text: `<img class="recipe-img" src="https://images.unsplash.com/photo-1585023068175-4e23e0f4e357?w=400&h=300&fit=crop" alt="Vegan Banana Bread"><br><br>A vegan classic that everyone loves!<br><br><strong>Vegan Banana Bread</strong> (Makes 1 loaf)<br><br><em>Ingredients:</em> 3 ripe bananas, 75ml coconut oil (melted), 150g sugar, 1 tsp vanilla, 250g flour, 1 tsp baking soda, 1/2 tsp cinnamon, pinch of salt.<br><br><em>Instructions:</em> Mash bananas, mix with oil, sugar, vanilla. Combine dry ingredients separately. Fold wet into dry. Pour into lined loaf pan. Bake at 350\u00b0F for 55 minutes.<br><br><strong>Allergen note:</strong> Dairy-free, egg-free! Check flour for gluten.<br><strong>Suggested price:</strong> $15 per loaf<br><strong>Marketing angle:</strong> "Plant-powered treats that give back!"`
+    },
+    cookies: {
+      name: "Brown Butter Sea Salt Cookies",
+      text: `<img class="recipe-img" src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=300&fit=crop" alt="Brown Butter Sea Salt Cookies"><br><br>The ultimate bake sale cookie!<br><br><strong>Brown Butter Sea Salt Cookies</strong> (Makes 24)<br><br><em>Ingredients:</em> 230g butter (browned), 200g brown sugar, 100g white sugar, 2 eggs, 1 tsp vanilla, 300g flour, 1 tsp baking soda, 200g chocolate chips, flaky sea salt.<br><br><em>Instructions:</em> Brown the butter and cool slightly. Cream with sugars. Add eggs and vanilla. Mix in flour and baking soda. Fold in chocolate chips. Scoop onto pans. Top with sea salt. Bake at 375\u00b0F for 10 minutes.<br><br><strong>Suggested price:</strong> $2.50 each | $24/dozen<br><strong>Secret weapon:</strong> The brown butter gives these a toffee flavor that people go crazy for!`
+    },
+    default: {
+      name: "Classic Red Velvet Cupcakes",
+      text: `<img class="recipe-img" src="https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?w=400&h=300&fit=crop" alt="Red Velvet Cupcakes"><br><br>Here's a fan-favorite that always sells out at fundraisers!<br><br><strong>Classic Red Velvet Cupcakes</strong> (Makes 18)<br><br><em>Ingredients:</em> 300g flour, 200g sugar, 30g cocoa powder, 1 tsp baking soda, 240ml buttermilk, 2 eggs, 120ml oil, 1 tbsp red food coloring, 1 tsp vanilla, cream cheese frosting.<br><br><em>Instructions:</em> Mix dry ingredients. Whisk wet ingredients separately. Combine until smooth. Fill cupcake liners 2/3 full. Bake at 350\u00b0F for 18-20 minutes. Cool and frost generously.<br><br><strong>Suggested price:</strong> $3 each | $30/dozen<br><strong>Display tip:</strong> Arrange on a tiered stand with a sign showing your cause. Visual impact = more sales!`
+    }
+  };
+
+  function handleRecipeChat() {
+    const input = document.getElementById('recipe-input');
+    const chat = document.getElementById('recipe-chat');
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    // Add user message
+    chat.innerHTML += `<div class="chat-msg user">${msg}</div>`;
+    input.value = '';
+
+    // Determine response
+    const lower = msg.toLowerCase();
+    let response;
+    if (lower.includes('chocolate') || lower.includes('brownie')) response = recipeResponses.chocolate;
+    else if (lower.includes('gluten') || lower.includes('gf')) response = recipeResponses['gluten-free'];
+    else if (lower.includes('vegan') || lower.includes('plant') || lower.includes('dairy-free')) response = recipeResponses.vegan;
+    else if (lower.includes('cookie')) response = recipeResponses.cookies;
+    else response = recipeResponses.default;
+
+    // Simulate typing delay
+    setTimeout(() => {
+      chat.innerHTML += `<div class="chat-msg bot">${response.text}</div>`;
+      chat.scrollTop = chat.scrollHeight;
+    }, 800);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  document.getElementById('recipe-input').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') handleRecipeChat();
+  });
+
+  // ===== LOCAL CHARITY FINDER =====
+  let selectedCause = '';
+  function selectCause(el, cause) {
+    document.querySelectorAll('.cause-pill').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedCause = cause;
+  }
+
+  const localCharities = {
+    animals: [
+      { name: "Your Local SPCA", type: "Animal Rescue & Adoption", desc: "Provides shelter, medical care, and adoption services for abandoned and abused animals in your county. Every $25 raised feeds a shelter dog for a month.", distance: "2.3 miles away" },
+      { name: "Best Friends Animal Society — Local Chapter", type: "No-Kill Advocacy", desc: "Works with local shelters to reduce euthanasia and find forever homes. Your bake sale can sponsor spay/neuter surgeries for community cats.", distance: "5.1 miles away" },
+      { name: "Wildlife Rescue Center", type: "Wildlife Rehabilitation", desc: "Rehabilitates injured wild animals and educates the community about coexisting with wildlife. They run on 100% donations.", distance: "8.7 miles away" }
+    ],
+    hunger: [
+      { name: "Community Food Bank", type: "Food Distribution", desc: "Distributes groceries to 2,000+ families weekly in your area. For every $1 raised, they provide 5 meals. Your cupcakes could feed hundreds.", distance: "1.8 miles away" },
+      { name: "Meals on Wheels — Local Branch", type: "Senior Nutrition", desc: "Delivers hot meals to homebound seniors in your zip code. A single bake sale can fund a week of meals for 10 seniors.", distance: "3.4 miles away" },
+      { name: "School Pantry Program", type: "Youth Hunger Relief", desc: "Stocks weekend food bags for students at local schools who rely on free lunch during the week. Run entirely by volunteers.", distance: "1.2 miles away" }
+    ],
+    education: [
+      { name: "DonorsChoose — Local Teachers", type: "Classroom Funding", desc: "Fund specific projects posted by teachers at schools near you — art supplies, science kits, books. You pick exactly where your money goes.", distance: "Your zip code" },
+      { name: "Boys & Girls Club", type: "Youth Development", desc: "After-school programs, tutoring, and mentorship for kids in your community. Your bake sale helps keep the doors open and programs running.", distance: "4.2 miles away" },
+      { name: "Local Library Foundation", type: "Literacy & Access", desc: "Funds free programs, children's reading events, and technology access at your neighborhood library.", distance: "2.0 miles away" }
+    ],
+    environment: [
+      { name: "One Tree Planted — Local Projects", type: "Reforestation", desc: "For every $1 raised, one tree is planted. They have active planting projects in your state. Name your sale 'Bake a Forest' and show customers their impact.", distance: "Your state" },
+      { name: "Local River Conservancy", type: "Water & Habitat", desc: "Protects waterways, cleans up local rivers, and preserves natural habitats in your county. Runs monthly volunteer cleanups.", distance: "6.5 miles away" },
+      { name: "Community Garden Coalition", type: "Urban Green Spaces", desc: "Builds and maintains community gardens in underserved neighborhoods. Your funds buy seeds, soil, and tools for a new plot.", distance: "3.1 miles away" }
+    ],
+    health: [
+      { name: "Children's Hospital Foundation", type: "Pediatric Care", desc: "Supports children facing serious illnesses at your regional children's hospital. Funds go to treatment, family support, and research.", distance: "7.2 miles away" },
+      { name: "Local Mental Health Alliance", type: "Mental Health Services", desc: "Free counseling, crisis support, and youth wellness programs in your community. Runs a teen peer-support hotline.", distance: "4.8 miles away" },
+      { name: "Special Olympics — Local Chapter", type: "Inclusive Athletics", desc: "Provides year-round sports training and competition for people with intellectual disabilities in your area.", distance: "5.5 miles away" }
+    ],
+    community: [
+      { name: "Habitat for Humanity — Local", type: "Housing", desc: "Builds affordable homes for families in your area. Your bake sale could fund the materials for a front porch or a set of windows.", distance: "3.9 miles away" },
+      { name: "Local Veterans Support Center", type: "Veteran Services", desc: "Provides transitional housing, job training, and mental health support for veterans in your county.", distance: "6.1 miles away" },
+      { name: "Neighborhood Youth Center", type: "Youth Programs", desc: "Safe after-school space with arts, sports, and mentorship. Serves 200+ kids weekly and runs on community donations.", distance: "1.5 miles away" }
+    ]
+  };
+
+  function findCharities() {
+    const zip = document.getElementById('charity-zip').value.trim();
+    const results = document.getElementById('charity-results');
+
+    if (!zip || zip.length < 5) {
+      document.getElementById('charity-zip').style.borderColor = '#e8758a';
+      return;
+    }
+    document.getElementById('charity-zip').style.borderColor = '#e2e8f0';
+
+    if (!selectedCause) {
+      // Flash the pills
+      document.querySelectorAll('.cause-pill').forEach(p => {
+        p.style.borderColor = '#e8758a';
+        setTimeout(() => p.style.borderColor = '#e2e8f0', 1500);
+      });
+      return;
+    }
+
+    const charities = localCharities[selectedCause] || localCharities.community;
+
+    // Simulate loading
+    results.innerHTML = '<p style="text-align:center; color:var(--blue-muted); padding:1rem;">&#128269; Finding verified nonprofits near ' + zip + '...</p>';
+
+    setTimeout(() => {
+      let html = '<p style="font-size:0.82rem; color:var(--teal); font-weight:600; margin-bottom:0.8rem;">&#9989; 3 VERIFIED 501(c)(3) NONPROFITS FOUND NEAR ' + zip + '</p>';
+      charities.forEach(c => {
+        html += `<div class="charity-result-card">
+          <div class="charity-type">${c.type}</div>
+          <h4>${c.name}</h4>
+          <p>${c.desc}</p>
+          <div class="charity-distance">&#128205; ${c.distance}</div>
+        </div>`;
+      });
+      html += '<p style="font-size:0.8rem; color:var(--blue-muted); margin-top:0.8rem; font-style:italic;">All organizations are verified 501(c)(3) nonprofits. On the full platform, you\'ll be able to select one and link it directly to your fundraiser page.</p>';
+      results.innerHTML = html;
+    }, 1200);
+  }
+
+  // ===== MARKETING GENERATOR =====
+  const marketingPosts = {
+    instagram: {
+      fun: "Craving something sweet AND meaningful? Our handmade treats are baked with love and every single penny of profit goes to charity. Yes, you read that right \u2014 100%! Drop a comment with your fave flavor and we'll make it happen. Because dessert tastes better when it makes a difference.\n\n#GetWhisked #BakeForGood #SweetCharity #HomeBaked #DessertWithPurpose",
+      heartfelt: "Every recipe has a story. Ours started with a simple belief: that a young person with a whisk, an oven, and a big heart can change the world \u2014 one treat at a time. This isn't just a bake sale. It's a movement of young bakers turning their passion into purpose.\n\nDonate or find a bake sale near you \u2014 link in bio.\n\n#GetWhisked #BakingWithPurpose #YouthLeadership",
+      urgent: "ONLY 3 DAYS LEFT until our spring bake sale! We're SO close to our fundraising goal \u2014 every donation and every treat sold gets us closer to making a real difference. Come find us this Saturday or donate through our page. Link in bio!\n\n#GetWhisked #LastChance #BakeForGood #BakeSale"
+    },
+    twitter: {
+      fun: "hot take: dessert that donates 100% to charity hits different. our bakers are out here changing the world one cupcake at a time and honestly? iconic behavior.",
+      heartfelt: "I've been passionate about baking since I was 11 and inspired by the idea of using creativity to make a difference. Now, young bakers across the country are using GetWhisked to launch their own charity bake sales. This is what youth leadership looks like.",
+      urgent: "Our spring bake sale is this Saturday and we're $400 from our goal. Come grab a treat or donate through our page. Can you help us cross the finish line? Every dollar counts."
+    },
+    facebook: {
+      fun: "Who wants fresh-baked treats delivered AND the warm fuzzy feeling of supporting a great cause? That's what GetWhisked is all about! Check out our menu \u2014 we've got everything from Oreo Cheesecake to Armenian Choreg. And yes, 100% of net proceeds go to charity!",
+      heartfelt: "I started baking when I was 11, and I always knew I wanted to use it to give back. GetWhisked has grown from my family kitchen into a platform where young bakers everywhere can organize bake sales and raise money for causes they care about. Every treat tells a story of kindness.",
+      urgent: "ATTENTION: Our bake sale is THIS FRIDAY after school! We've got Pumpkin Loaf, Oreo Cheesecake, and Brown Butter Cookies. Come grab a treat \u2014 all proceeds go directly to charity! Can't make it? Donate through our page!"
+    },
+    tiktok: {
+      fun: "POV: you're a teen baker and your cupcakes just raised $500 for charity (the secret ingredient is caring, obviously). Follow for more baking-for-good content!",
+      heartfelt: "I've been passionate about baking since I was 11. Every bake sale on GetWhisked goes beyond dessert \u2014 all net proceeds are donated to support meaningful causes. This is GetWhisked. Baking with purpose.",
+      urgent: "3 DAYS until our bake sale and we need YOUR help to hit our goal! Come grab a treat or donate through our page \u2014 stitch this and let's make it happen!"
+    }
+  };
+
+  function generatePost() {
+    const platform = document.getElementById('platform-select').value;
+    const tone = document.getElementById('tone-select').value;
+    const post = marketingPosts[platform][tone];
+    const platformNames = { instagram: 'Instagram', twitter: 'Twitter / X', facebook: 'Facebook', tiktok: 'TikTok' };
+
+    document.getElementById('post-label').textContent = platformNames[platform] + ' Post \u2014 Ready to Copy';
+    document.getElementById('post-text').textContent = post;
+    document.getElementById('gen-output').classList.add('show');
+  }
+
+  // ===== COUNT UP ANIMATION =====
+  function animateCounters() {
+    document.querySelectorAll('.impact-stat .number').forEach(el => {
+      const target = parseInt(el.dataset.target);
+      const prefix = el.dataset.prefix || '';
+      const duration = 2000;
+      const step = target / (duration / 16);
+      let current = 0;
+
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        el.textContent = prefix + Math.floor(current).toLocaleString();
+      }, 16);
+    });
+  }
+
+  // ===== SCROLL ANIMATIONS =====
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        if (entry.target.closest('.impact-banner')) {
+          animateCounters();
+        }
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Observe impact banner
+  const impactBanner = document.querySelector('.impact-banner');
+  if (impactBanner) {
+    const bannerObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        animateCounters();
+        bannerObserver.disconnect();
+      }
+    }, { threshold: 0.3 });
+    bannerObserver.observe(impactBanner);
+  }
+</script>
+</body>
+</html>
